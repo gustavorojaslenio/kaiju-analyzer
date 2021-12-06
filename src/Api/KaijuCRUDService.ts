@@ -8,14 +8,23 @@ export interface PostKaijuDNAApi {
   dna: string;
 }
 
+export type KaijuData = {
+  percentage: number;
+  kaijuType: KaijuType;
+};
+
 class KaijuCRUDService extends HTTPService {
   static instance = new KaijuCRUDService();
   constructor() {
     super(process.env.REACT_APP_KAIJU_API_URL!);
   }
 
-  async get(kaijuType: GetKaijuTypeApi) {
-    return await this.service.get(`/stats?type=${kaijuType}`);
+  async get(kaijuType?: GetKaijuTypeApi) {
+    return await this.service.get(`/stats`, {
+      params: {
+        kaijuType: kaijuType || "ALL"
+      }
+    });
   }
 
   async post(payload: PostKaijuDNAApi) {

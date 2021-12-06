@@ -8,12 +8,14 @@ declare global {
   }
 }
 
-const middlewares = [ReduxThunk];
-
 const composeEnhancers =
   window["__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"] || compose;
 
-export const store = createStore(
-  rootReducer(),
-  composeEnhancers(applyMiddleware(...middlewares))
-);
+export const configureStore = () => {
+  const middlewares = [ReduxThunk];
+  const middlewareEnhancer = applyMiddleware(...middlewares);
+  const enhancers = [middlewareEnhancer];
+  const store = createStore(rootReducer(), {}, composeEnhancers(...enhancers));
+
+  return store;
+};
