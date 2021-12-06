@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import HttpService from "../Api/HttpService";
+import KaijuCRUDService from "../Api/KaijuCRUDService";
 import { ApplicationState } from "../redux";
 import { setKaijuDNAValue, setKaijuDNAError } from "../redux/kaijuDNA";
 import { validateKaijuDNA } from "../utils";
@@ -21,13 +21,14 @@ export const useAddKaijuForm = () => {
   };
 
   const handleSubmit = async () => {
-    const res = await HttpService.post({
-      mode: "raw",
-      raw: {
+    try {
+      const res = await KaijuCRUDService.post({
         dna
-      }
-    });
-    console.log(res);
+      });
+      console.log(res);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return {

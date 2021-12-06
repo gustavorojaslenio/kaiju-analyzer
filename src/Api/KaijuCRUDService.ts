@@ -1,28 +1,17 @@
-import axios, { AxiosInstance } from "axios";
+import HTTPService from "./HTTPService";
 
 export type GetKaijuTypeApi = "ONE" | "TWO" | "THREE" | "UNKNOWN" | "ALL";
 
 export type KaijuType = "TYPE I" | "TYPE II" | "TYPE III" | "unknown";
 
-type Mode = "raw";
-
-type Raw = { dna: string };
-
 export interface PostKaijuDNAApi {
-  mode: Mode;
-  raw: Raw;
+  dna: string;
 }
 
-class HttpService {
-  service: AxiosInstance;
-
-  static instance = new HttpService();
-
+class KaijuCRUDService extends HTTPService {
+  static instance = new KaijuCRUDService();
   constructor() {
-    this.service = axios.create({
-      baseURL: process.env.REACT_APP_KAIJU_API_URL,
-      timeout: 10000
-    });
+    super(process.env.REACT_APP_KAIJU_API_URL!);
   }
 
   async get(kaijuType: GetKaijuTypeApi) {
@@ -34,4 +23,4 @@ class HttpService {
   }
 }
 
-export default HttpService.instance;
+export default KaijuCRUDService.instance;
